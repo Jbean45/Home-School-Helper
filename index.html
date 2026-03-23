@@ -6,46 +6,68 @@
         body {
             font-family: Arial;
             text-align: center;
-            background-image: url('https://images.unsplash.com/photo-1582582429416-0b3b9e0c8c5d');
+
+            /* 🌄 Layered farm background */
+            background:
+                linear-gradient(rgba(135, 206, 235, 0.4), rgba(34, 139, 34, 0.6)),
+                url('https://images.unsplash.com/photo-1500595046743-cd271d694d30');
+            
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+
             color: #fff;
+            margin: 0;
+            min-height: 100vh;
         }
 
         h1 {
             margin-top: 50px;
+            font-size: 42px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
         }
 
         .container {
             margin-top: 40px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 15px;
+
+            /* 🌾 Warm rustic panel */
+            background-color: rgba(60, 40, 20, 0.75);
+
+            padding: 25px;
+            border-radius: 20px;
             display: inline-block;
+
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
         }
 
         .btn {
             display: block;
-            width: 250px;
+            width: 260px;
             margin: 15px auto;
             padding: 15px;
             font-size: 18px;
-            background-color: #8B5A2B;
+
+            /* 🌳 Wood-style buttons */
+            background: linear-gradient(145deg, #8B5A2B, #5c3b1e);
             color: white;
+
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 12px;
+
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
         }
 
         .btn:hover {
-            background-color: #6e4521;
+            background: linear-gradient(145deg, #a06b35, #6e4521);
+            transform: scale(1.05);
         }
     </style>
 </head>
 
 <body>
 
-    <h1>🏠 Homeschool Helper</h1>
+    <h1>🏡 Homeschool Farm Helper</h1>
 
     <div class="container">
         <a class="btn" href="math.html">➕ Math</a>
