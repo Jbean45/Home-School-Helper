@@ -1,108 +1,255 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mall Money Master 💰</title>
+    <title>Mall Money Master 💖</title>
     <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             text-align: center;
-            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            background: linear-gradient(to right, #ffdde1, #ee9ca7);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px #00000055;
         }
 
         .game-box {
             background: white;
             padding: 25px;
-            margin: 50px auto;
-            width: 350px;
-            border-radius: 15px;
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+            margin: 20px auto;
+            width: 90%;
+            max-width: 550px;
+            border-radius: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        }
+
+        .items {
+            text-align: left;
+            margin: 15px auto;
+            width: 80%;
+            font-size: 18px;
+        }
+
+        input, select {
+            padding: 10px;
+            font-size: 16px;
+            margin: 8px;
+            width: 180px;
+            text-align: center;
+            border-radius: 10px;
+            border: 1px solid #ccc;
         }
 
         button {
-            padding: 10px 20px;
-            margin-top: 15px;
+            padding: 12px 20px;
             font-size: 16px;
-            border-radius: 10px;
+            margin: 8px;
             border: none;
+            border-radius: 12px;
             cursor: pointer;
+            background-color: #ff6f91;
+            color: white;
+            font-weight: bold;
         }
 
-        input {
-            padding: 10px;
-            width: 150px;
-            font-size: 16px;
-            text-align: center;
+        button:hover {
+            background-color: #ff4f7a;
         }
 
         .correct {
             color: green;
             font-weight: bold;
+            font-size: 18px;
         }
 
         .wrong {
             color: red;
             font-weight: bold;
+            font-size: 18px;
+        }
+
+        .info {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .budget {
+            color: #6a1b9a;
+            font-weight: bold;
         }
     </style>
 </head>
-
 <body>
 
-<h1>🛍️ Mall Money Master 💰</h1>
+    <h1>🛍️ Mall Money Master 💖</h1>
 
-<div class="game-box">
-    <h3 id="question">Press Start!</h3>
+    <div class="game-box">
+        <p><strong>Choose Difficulty:</strong></p>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+        <br>
+        <button onclick="startGame()">Start Game</button>
 
-    <input type="number" id="answer" placeholder="Total $" step="0.01">
+        <div id="gameArea" style="display:none;">
+            <p class="budget" id="budgetText"></p>
+            <p id="taxText"></p>
 
-    <br>
-    <button onclick="checkAnswer()">Submit</button>
-    <button onclick="newQuestion()">Next</button>
+            <div class="items" id="itemsList"></div>
 
-    <p id="feedback"></p>
-    <p id="score">Score: 0</p>
-</div>
+            <p><strong>Enter the subtotal:</strong></p>
+            <input type="number" id="subtotalAnswer" step="0.01" placeholder="Subtotal">
 
-<script>
-let price, taxRate, correctTotal;
-let score = 0;
+            <p><strong>Enter the final total with tax:</strong></p>
+            <input type="number" id="totalAnswer" step="0.01" placeholder="Final Total">
 
-function newQuestion() {
-    // Random price between $5 and $50
-    price = (Math.random() * 45 + 5).toFixed(2);
+            <br>
+            <button onclick="checkAnswers()">Submit</button>
+            <button onclick="nextRound()">Next Round</button>
 
-    // Random tax between 5% and 9%
-    taxRate = Math.floor(Math.random() * 5) + 5;
+            <p id="feedback"></p>
+            <p class="info" id="scoreText">Score: 0</p>
+            <p class="info" id="roundText">Round: 0 / 10</p>
+        </div>
+    </div>
 
-    let taxAmount = price * (taxRate / 100);
-    correctTotal = (parseFloat(price) + taxAmount).toFixed(2);
+    <script>
+        let items = [];
+        let subtotal = 0;
+        let taxRate = 0;
+        let finalTotal = 0;
+        let budget = 0;
+        let score = 0;
+        let round = 0;
+        const maxRounds = 10;
 
-    document.getElementById("question").innerHTML =
-        "🛍️ Item Price: $" + price +
-        "<br>Tax: " + taxRate + "%" +
-        "<br><br>💡 What is the TOTAL cost?";
+        const itemNames = [
+            "Lip Gloss", "Notebook", "Bracelet", "T-Shirt", "Water Bottle",
+            "Hair Clips", "Socks", "Phone Case", "Mini Backpack", "Headphones",
+            "Sticker Pack", "Journal", "Candy Bag", "Beanie", "Keychain"
+        ];
 
-    document.getElementById("answer").value = "";
-    document.getElementById("feedback").innerHTML = "";
-}
+        function getRandomItemName() {
+            return itemNames[Math.floor(Math.random() * itemNames.length)];
+        }
 
-function checkAnswer() {
-    let userAnswer = parseFloat(document.getElementById("answer").value).toFixed(2);
+        function getRandomPrice(level) {
+            let price;
+            if (level === "easy") {
+                price = Math.floor(Math.random() * 15) + 3; // 3 to 17
+            } else if (level === "medium") {
+                price = (Math.random() * 20 + 5).toFixed(2); // 5.00 to 25.00
+            } else {
+                price = (Math.random() * 35 + 8).toFixed(2); // 8.00 to 43.00
+            }
+            return parseFloat(price);
+        }
 
-    if (userAnswer == correctTotal) {
-        score++;
-        document.getElementById("feedback").innerHTML =
-            "✅ Correct! Nice shopping skills!";
-        document.getElementById("feedback").className = "correct";
-    } else {
-        document.getElementById("feedback").innerHTML =
-            "❌ Nope! Correct answer: $" + correctTotal;
-        document.getElementById("feedback").className = "wrong";
-    }
+        function getTaxRate(level) {
+            if (level === "easy") return 5;
+            if (level === "medium") return Math.floor(Math.random() * 3) + 6; // 6-8
+            return Math.floor(Math.random() * 4) + 6; // 6-9
+        }
 
-    document.getElementById("score").innerHTML = "Score: " + score;
-}
-</script>
+        function getBudget(level) {
+            if (level === "easy") return Math.floor(Math.random() * 30) + 30; // 30-59
+            if (level === "medium") return Math.floor(Math.random() * 40) + 40; // 40-79
+            return Math.floor(Math.random() * 50) + 50; // 50-99
+        }
+
+        function startGame() {
+            score = 0;
+            round = 0;
+            document.getElementById("gameArea").style.display = "block";
+            nextRound();
+        }
+
+        function nextRound() {
+            if (round >= maxRounds) {
+                document.getElementById("itemsList").innerHTML = "";
+                document.getElementById("taxText").innerHTML = "";
+                document.getElementById("budgetText").innerHTML = "";
+                document.getElementById("feedback").className = "";
+                document.getElementById("feedback").innerHTML =
+                    "🎉 Game Over! Final Score: " + score + " out of " + maxRounds;
+                return;
+            }
+
+            round++;
+            const level = document.getElementById("difficulty").value;
+            taxRate = getTaxRate(level);
+            budget = getBudget(level);
+            items = [];
+            subtotal = 0;
+
+            for (let i = 0; i < 3; i++) {
+                let name = getRandomItemName();
+                let price = getRandomPrice(level);
+                items.push({ name, price });
+                subtotal += price;
+            }
+
+            subtotal = parseFloat(subtotal.toFixed(2));
+            finalTotal = parseFloat((subtotal + (subtotal * taxRate / 100)).toFixed(2));
+
+            let html = "";
+            for (let i = 0; i < items.length; i++) {
+                html += `<p>${i + 1}. ${items[i].name} - $${items[i].price.toFixed(2)}</p>`;
+            }
+
+            document.getElementById("itemsList").innerHTML = html;
+            document.getElementById("taxText").innerHTML = `<strong>Sales Tax:</strong> ${taxRate}%`;
+            document.getElementById("budgetText").innerHTML = `💸 Budget: $${budget}`;
+            document.getElementById("subtotalAnswer").value = "";
+            document.getElementById("totalAnswer").value = "";
+            document.getElementById("feedback").innerHTML = "";
+            document.getElementById("feedback").className = "";
+            document.getElementById("scoreText").innerHTML = "Score: " + score;
+            document.getElementById("roundText").innerHTML = "Round: " + round + " / " + maxRounds;
+        }
+
+        function checkAnswers() {
+            let userSubtotal = parseFloat(document.getElementById("subtotalAnswer").value);
+            let userTotal = parseFloat(document.getElementById("totalAnswer").value);
+
+            if (isNaN(userSubtotal) || isNaN(userTotal)) {
+                document.getElementById("feedback").className = "wrong";
+                document.getElementById("feedback").innerHTML = "⚠️ Please answer both boxes first.";
+                return;
+            }
+
+            userSubtotal = parseFloat(userSubtotal.toFixed(2));
+            userTotal = parseFloat(userTotal.toFixed(2));
+
+            let subtotalCorrect = userSubtotal === subtotal;
+            let totalCorrect = userTotal === finalTotal;
+
+            let budgetMessage = finalTotal <= budget
+                ? "✅ Great job — you stayed under budget!"
+                : "❌ Oops — you went over budget!";
+
+            if (subtotalCorrect && totalCorrect) {
+                score++;
+                document.getElementById("feedback").className = "correct";
+                document.getElementById("feedback").innerHTML =
+                    `✅ Correct! Subtotal: $${subtotal.toFixed(2)} | Total: $${finalTotal.toFixed(2)}<br>${budgetMessage}`;
+            } else {
+                document.getElementById("feedback").className = "wrong";
+                document.getElementById("feedback").innerHTML =
+                    `❌ Not quite.<br>
+                    Correct subtotal: $${subtotal.toFixed(2)}<br>
+                    Correct total with tax: $${finalTotal.toFixed(2)}<br>
+                    ${budgetMessage}`;
+            }
+
+            document.getElementById("scoreText").innerHTML = "Score: " + score;
+        }
+    </script>
 
 </body>
 </html>
