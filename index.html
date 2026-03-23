@@ -5,36 +5,44 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
+
+            /* 🌄 Background */
             background:
                 linear-gradient(rgba(135, 206, 235, 0.35), rgba(34, 139, 34, 0.65)),
                 url('https://images.unsplash.com/photo-1500595046743-cd271d694d30');
+
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+
             color: #fff;
             margin: 0;
             min-height: 100vh;
+
+            /* ✅ CENTER EVERYTHING */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+
             overflow: hidden;
             position: relative;
         }
 
         h1 {
-            margin-top: 50px;
             font-size: 42px;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
-            position: relative;
+            margin-bottom: 20px;
             z-index: 2;
         }
 
         .container {
-            margin-top: 40px;
             background-color: rgba(60, 40, 20, 0.78);
             padding: 25px;
             border-radius: 20px;
             display: inline-block;
             box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-            position: relative;
             z-index: 2;
         }
 
@@ -62,7 +70,7 @@
             font-size: 24px;
         }
 
-        /* Fireflies */
+        /* 🐝 Fireflies */
         .firefly {
             position: absolute;
             width: 8px;
@@ -74,74 +82,23 @@
             z-index: 1;
         }
 
-        .firefly:nth-child(1) {
-            left: 10%;
-            bottom: -20px;
-            animation-duration: 12s, 2s;
-            animation-delay: 0s, 0s;
-        }
-
-        .firefly:nth-child(2) {
-            left: 25%;
-            bottom: -30px;
-            animation-duration: 15s, 3s;
-            animation-delay: 2s, 1s;
-        }
-
-        .firefly:nth-child(3) {
-            left: 40%;
-            bottom: -25px;
-            animation-duration: 10s, 2.5s;
-            animation-delay: 1s, 0.5s;
-        }
-
-        .firefly:nth-child(4) {
-            left: 60%;
-            bottom: -35px;
-            animation-duration: 14s, 2.2s;
-            animation-delay: 3s, 1.3s;
-        }
-
-        .firefly:nth-child(5) {
-            left: 75%;
-            bottom: -20px;
-            animation-duration: 11s, 2.8s;
-            animation-delay: 1.5s, 0.8s;
-        }
-
-        .firefly:nth-child(6) {
-            left: 90%;
-            bottom: -40px;
-            animation-duration: 16s, 3.2s;
-            animation-delay: 4s, 1.5s;
-        }
+        .firefly:nth-child(1) { left: 10%; bottom: -20px; animation-duration: 12s, 2s; }
+        .firefly:nth-child(2) { left: 25%; bottom: -30px; animation-duration: 15s, 3s; }
+        .firefly:nth-child(3) { left: 40%; bottom: -25px; animation-duration: 10s, 2.5s; }
+        .firefly:nth-child(4) { left: 60%; bottom: -35px; animation-duration: 14s, 2.2s; }
+        .firefly:nth-child(5) { left: 75%; bottom: -20px; animation-duration: 11s, 2.8s; }
+        .firefly:nth-child(6) { left: 90%; bottom: -40px; animation-duration: 16s, 3.2s; }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-300px) translateX(20px);
-            }
-            100% {
-                transform: translateY(-700px) translateX(-20px);
-                opacity: 0;
-            }
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            50% { transform: translateY(-300px) translateX(20px); }
+            100% { transform: translateY(-700px) translateX(-20px); opacity: 0; }
         }
 
         @keyframes flicker {
-            0%, 100% {
-                opacity: 0.3;
-                box-shadow: 0 0 8px 2px rgba(255, 255, 150, 0.5);
-            }
-            50% {
-                opacity: 1;
-                box-shadow: 0 0 16px 6px rgba(255, 255, 180, 1);
-            }
+            0%,100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
@@ -156,7 +113,7 @@
     <div class="firefly"></div>
     <div class="firefly"></div>
 
-    <h1>🏡 Homeschool Helper</h1>
+    <h1>🏡 Homeschool Farm Helper</h1>
 
     <div class="container">
         <a class="btn" href="math.html"><span class="animal">🐮</span>Math</a>
