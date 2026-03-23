@@ -4,18 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Decimal Math Practice</title>
-
   <style>
     :root {
-      --bg: #f6f8fb;
+      --bg: #eef2f6;
       --card: #ffffff;
       --text: #1f2937;
-      --muted: #6b7280;
+      --muted: #4b5563;
       --accent: #2563eb;
       --accent-dark: #1d4ed8;
       --good: #166534;
       --bad: #b91c1c;
-      --border: #dbe3ee;
+      --border: #d1d9e6;
     }
 
     * { box-sizing: border-box; }
@@ -25,25 +24,51 @@
       font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
       color: var(--text);
-      padding: 24px;
+      padding: 0;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 860px;
       margin: 0 auto;
+      padding: 0 12px 32px;
     }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      padding: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      margin-top: 0;
     }
 
-    h1, h2, h3 { margin-top: 0; }
+    h1, h2, h3 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      color: #183153;
+    }
 
-    .muted { color: var(--muted); }
+    h1 {
+      font-size: 30px;
+      font-weight: 700;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      margin-top: 10px;
+      margin-bottom: 18px;
+      padding-left: 34px;
+    }
+
+    ul li {
+      margin-bottom: 2px;
+      font-size: 15px;
+    }
 
     .row {
       display: flex;
@@ -72,15 +97,24 @@
       border: 1px solid var(--border);
     }
 
+    select {
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid #c7d0dd;
+      font-size: 1rem;
+      background: #fff;
+    }
+
     button {
       border: none;
-      border-radius: 12px;
-      padding: 12px 18px;
+      border-radius: 14px;
+      padding: 14px 18px;
       font-size: 1rem;
       cursor: pointer;
       background: var(--accent);
       color: white;
-      font-weight: 600;
+      font-weight: 700;
+      min-width: 126px;
     }
 
     button:hover { background: var(--accent-dark); }
@@ -112,6 +146,9 @@
       border: 1px solid #fecaca;
       color: #991b1b;
     }
+
+    .correct { color: var(--good); }
+    .wrong { color: var(--bad); }
 
     .hidden { display: none; }
 
@@ -145,11 +182,10 @@
 
     th { background: #eef4ff; }
 
-    /* 🔙 Bottom Back Link */
     .bottom-back {
       display: block;
       text-align: center;
-      margin-top: 30px;
+      margin-top: 20px;
       font-size: 18px;
       color: #2563eb;
       text-decoration: none;
@@ -162,23 +198,25 @@
 
     @media (max-width: 640px) {
       .problem-box { font-size: 1.5rem; }
-      body { padding: 12px; }
+      .container { padding: 0 10px 24px; }
       .card { padding: 16px; }
+      h1 { font-size: 26px; }
     }
   </style>
 </head>
-
 <body>
-
   <div class="container">
-
     <div id="startScreen" class="card">
       <h1>Decimal Math Practice</h1>
       <p class="muted">
-        Practice multiplying and dividing decimals. You will get 10 problems,
-        up to 3 tries per problem, and a review page at the end. Be sure to round your answers to the nearest hundredth (two decimal places).
+        Practice multiplying and dividing decimals. You will get 10 problems, up to 3 tries per problem, and a review page at the end. Be sure to round your answers to the nearest hundredth (two decimal places).
       </p>
-
+      <ul>
+        <li>Choose Easy, Medium, or Hard</li>
+        <li>Decimal multiplication and division</li>
+        <li>No repeated problems</li>
+        <li>10 total problems</li>
+      </ul>
       <div class="row" style="margin: 16px 0 18px 0;">
         <label for="difficultySelect"><strong>Difficulty:</strong></label>
         <select id="difficultySelect">
@@ -187,7 +225,6 @@
           <option value="hard">Hard</option>
         </select>
       </div>
-
       <button id="startBtn">Start Practice</button>
     </div>
 
@@ -207,20 +244,20 @@
 
       <div id="feedback" class="feedback"></div>
       <div id="resultBox" class="result-box hidden"></div>
-
       <p class="muted">Tip: Always round your answer to the nearest hundredth (2 decimal places) when applicable.</p>
     </div>
 
     <div id="reviewScreen" class="card hidden">
       <h2>Practice Review</h2>
-
       <div class="stats">
         <div class="stat"><strong>Total Problems:</strong> 10</div>
         <div class="stat"><strong>Correct:</strong> <span id="finalCorrect">0</span></div>
         <div class="stat"><strong>Score:</strong> <span id="finalScore">0%</span></div>
       </div>
 
-      <button id="restartBtn">Practice Again</button>
+      <div class="row">
+        <button id="restartBtn">Practice Again</button>
+      </div>
 
       <table>
         <thead>
@@ -236,15 +273,262 @@
         <tbody id="reviewBody"></tbody>
       </table>
     </div>
-
   </div>
 
-  <!-- 🔙 Back to Home -->
-  <a href="index.html" class="bottom-back">⬅ Back to Home</a>
+  <a href="math.html" class="bottom-back">⬅ Return to Math Page</a>
 
   <script>
-    // (Your existing JS stays unchanged)
-  </script>
+    const TOTAL_PROBLEMS = 10;
+    const MAX_ATTEMPTS = 3;
 
+    const difficultySettings = {
+      easy: {
+        name: 'Easy',
+        multiplicandMin: 2,
+        multiplicandMax: 21,
+        quotientMin: 2,
+        quotientMax: 10,
+        decimalPlaces: 1
+      },
+      medium: {
+        name: 'Medium',
+        multiplicandMin: 10,
+        multiplicandMax: 101,
+        quotientMin: 2,
+        quotientMax: 20,
+        decimalPlaces: 1
+      },
+      hard: {
+        name: 'Hard',
+        multiplicandMin: 25,
+        multiplicandMax: 201,
+        quotientMin: 5,
+        quotientMax: 30,
+        decimalPlaces: 2
+      }
+    };
+
+    let problems = [];
+    let results = [];
+    let currentProblemIndex = 0;
+    let currentAttempt = 1;
+    let correctAnswers = 0;
+    let selectedDifficulty = 'medium';
+
+    const startScreen = document.getElementById('startScreen');
+    const quizScreen = document.getElementById('quizScreen');
+    const reviewScreen = document.getElementById('reviewScreen');
+
+    const startBtn = document.getElementById('startBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const restartBtn = document.getElementById('restartBtn');
+
+    const problemCount = document.getElementById('problemCount');
+    const attemptCount = document.getElementById('attemptCount');
+    const correctCount = document.getElementById('correctCount');
+    const problemText = document.getElementById('problemText');
+    const answerInput = document.getElementById('answerInput');
+    const feedback = document.getElementById('feedback');
+    const resultBox = document.getElementById('resultBox');
+
+    const finalCorrect = document.getElementById('finalCorrect');
+    const finalScore = document.getElementById('finalScore');
+    const reviewBody = document.getElementById('reviewBody');
+    const difficultySelect = document.getElementById('difficultySelect');
+
+    startBtn.addEventListener('click', startPractice);
+    submitBtn.addEventListener('click', submitAnswer);
+    restartBtn.addEventListener('click', restartToStart);
+    answerInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') submitAnswer();
+    });
+
+    function restartToStart() {
+      reviewScreen.classList.add('hidden');
+      quizScreen.classList.add('hidden');
+      startScreen.classList.remove('hidden');
+    }
+
+    function startPractice() {
+      selectedDifficulty = difficultySelect.value;
+      problems = generateUniqueProblems(TOTAL_PROBLEMS, selectedDifficulty);
+      results = [];
+      currentProblemIndex = 0;
+      currentAttempt = 1;
+      correctAnswers = 0;
+
+      startScreen.classList.add('hidden');
+      reviewScreen.classList.add('hidden');
+      quizScreen.classList.remove('hidden');
+
+      showProblem();
+    }
+
+    function showProblem() {
+      const currentProblem = problems[currentProblemIndex];
+      problemCount.textContent = currentProblemIndex + 1;
+      attemptCount.textContent = currentAttempt;
+      correctCount.textContent = correctAnswers;
+      problemText.textContent = currentProblem.question;
+      answerInput.value = '';
+      feedback.textContent = '';
+      feedback.className = 'feedback';
+      resultBox.className = 'result-box hidden';
+      resultBox.textContent = '';
+      answerInput.focus();
+    }
+
+    function submitAnswer() {
+      const value = answerInput.value.trim();
+      if (value === '') {
+        feedback.textContent = 'Please enter an answer.';
+        feedback.className = 'feedback wrong';
+        return;
+      }
+
+      const studentAnswer = Number(value);
+      const currentProblem = problems[currentProblemIndex];
+      const isCorrect = nearlyEqual(studentAnswer, currentProblem.answer);
+      const roundingIssue = isRoundingIssue(studentAnswer, currentProblem.answer);
+
+      if (isCorrect) {
+        correctAnswers++;
+        results.push({
+          number: currentProblemIndex + 1,
+          problem: currentProblem.question,
+          studentAnswer: studentAnswer.toFixed(2),
+          correctAnswer: currentProblem.answer.toFixed(2),
+          attempts: currentAttempt,
+          result: 'Correct'
+        });
+
+        resultBox.textContent = 'Correct!';
+        resultBox.className = 'result-box result-correct';
+        setTimeout(moveToNextProblem, 900);
+        return;
+      }
+
+      if (currentAttempt < MAX_ATTEMPTS) {
+        resultBox.textContent = roundingIssue
+          ? 'Close! You were off due to rounding. Round to the nearest hundredth.'
+          : 'Wrong. Try again.';
+        resultBox.className = 'result-box result-wrong';
+        currentAttempt++;
+        attemptCount.textContent = currentAttempt;
+        answerInput.select();
+        setTimeout(() => {
+          resultBox.className = 'result-box hidden';
+          resultBox.textContent = '';
+        }, 900);
+        return;
+      }
+
+      results.push({
+        number: currentProblemIndex + 1,
+        problem: currentProblem.question,
+        studentAnswer: studentAnswer.toFixed(2),
+        correctAnswer: currentProblem.answer.toFixed(2),
+        attempts: currentAttempt,
+        result: 'Wrong'
+      });
+
+      resultBox.textContent = `Wrong. Correct: ${currentProblem.answer.toFixed(2)}`;
+      resultBox.className = 'result-box result-wrong';
+      setTimeout(moveToNextProblem, 1200);
+    }
+
+    function moveToNextProblem() {
+      currentProblemIndex++;
+      currentAttempt = 1;
+
+      if (currentProblemIndex >= TOTAL_PROBLEMS) {
+        showReview();
+      } else {
+        showProblem();
+      }
+    }
+
+    function showReview() {
+      quizScreen.classList.add('hidden');
+      reviewScreen.classList.remove('hidden');
+
+      finalCorrect.textContent = correctAnswers;
+      finalScore.textContent = Math.round((correctAnswers / TOTAL_PROBLEMS) * 100) + '%';
+
+      reviewBody.innerHTML = '';
+      for (const item of results) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.number}</td>
+          <td>${item.problem}</td>
+          <td>${item.studentAnswer}</td>
+          <td>${item.correctAnswer}</td>
+          <td>${item.attempts}</td>
+          <td>${item.result}</td>
+        `;
+        reviewBody.appendChild(row);
+      }
+    }
+
+    function generateUniqueProblems(count, difficulty) {
+      const set = new Set();
+      const list = [];
+
+      while (list.length < count) {
+        const problem = createRandomProblem(difficulty);
+        if (!set.has(problem.key)) {
+          set.add(problem.key);
+          list.push(problem);
+        }
+      }
+
+      return list;
+    }
+
+    function createRandomProblem(difficulty) {
+      const operationChoice = Math.floor(Math.random() * 2);
+      const settings = difficultySettings[difficulty];
+      let num1, num2, answer, question, key;
+
+      if (operationChoice === 0) {
+        num1 = roundTo(randomDecimalInRange(settings.multiplicandMin, settings.multiplicandMax), settings.decimalPlaces);
+        num2 = roundTo(randomDecimalInRange(settings.multiplicandMin, settings.multiplicandMax), settings.decimalPlaces);
+        answer = round2(num1 * num2);
+        question = `${num1.toFixed(settings.decimalPlaces)} × ${num2.toFixed(settings.decimalPlaces)}`;
+        key = `M:${difficulty}:${num1}:${num2}`;
+      } else {
+        num2 = roundTo(randomDecimalInRange(settings.multiplicandMin, settings.multiplicandMax), settings.decimalPlaces);
+        answer = roundTo(randomDecimalInRange(settings.quotientMin, settings.quotientMax), settings.decimalPlaces);
+        num1 = round2(num2 * answer);
+        question = `${num1.toFixed(2)} ÷ ${num2.toFixed(settings.decimalPlaces)}`;
+        key = `D:${difficulty}:${num1}:${num2}`;
+      }
+
+      return { question, answer, key };
+    }
+
+    function randomDecimalInRange(min, max) {
+      return Math.floor(Math.random() * (max - min) + min) + Math.random();
+    }
+
+    function roundTo(value, places) {
+      const factor = Math.pow(10, places);
+      return Math.round(value * factor) / factor;
+    }
+
+    function round2(value) {
+      return Math.round(value * 100) / 100;
+    }
+
+    function nearlyEqual(a, b) {
+      return Math.abs(a - b) < 0.01;
+    }
+
+    function isRoundingIssue(a, b) {
+      const roundedA = round2(a);
+      const roundedB = round2(b);
+      return roundedA === roundedB && Math.abs(a - b) >= 0.01;
+    }
+  </script>
 </body>
 </html>
