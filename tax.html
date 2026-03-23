@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mall Money Master 💰</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+        }
+
+        .game-box {
+            background: white;
+            padding: 25px;
+            margin: 50px auto;
+            width: 350px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            width: 150px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+
+        .wrong {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🛍️ Mall Money Master 💰</h1>
+
+<div class="game-box">
+    <h3 id="question">Press Start!</h3>
+
+    <input type="number" id="answer" placeholder="Total $" step="0.01">
+
+    <br>
+    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="newQuestion()">Next</button>
+
+    <p id="feedback"></p>
+    <p id="score">Score: 0</p>
+</div>
+
+<script>
+let price, taxRate, correctTotal;
+let score = 0;
+
+function newQuestion() {
+    // Random price between $5 and $50
+    price = (Math.random() * 45 + 5).toFixed(2);
+
+    // Random tax between 5% and 9%
+    taxRate = Math.floor(Math.random() * 5) + 5;
+
+    let taxAmount = price * (taxRate / 100);
+    correctTotal = (parseFloat(price) + taxAmount).toFixed(2);
+
+    document.getElementById("question").innerHTML =
+        "🛍️ Item Price: $" + price +
+        "<br>Tax: " + taxRate + "%" +
+        "<br><br>💡 What is the TOTAL cost?";
+
+    document.getElementById("answer").value = "";
+    document.getElementById("feedback").innerHTML = "";
+}
+
+function checkAnswer() {
+    let userAnswer = parseFloat(document.getElementById("answer").value).toFixed(2);
+
+    if (userAnswer == correctTotal) {
+        score++;
+        document.getElementById("feedback").innerHTML =
+            "✅ Correct! Nice shopping skills!";
+        document.getElementById("feedback").className = "correct";
+    } else {
+        document.getElementById("feedback").innerHTML =
+            "❌ Nope! Correct answer: $" + correctTotal;
+        document.getElementById("feedback").className = "wrong";
+    }
+
+    document.getElementById("score").innerHTML = "Score: " + score;
+}
+</script>
+
+</body>
+</html>
