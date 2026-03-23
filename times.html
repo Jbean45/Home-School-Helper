@@ -19,7 +19,7 @@
             background: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
@@ -57,27 +57,6 @@
             background-color: #076bb3;
         }
 
-        .message {
-            margin-top: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 10px;
-            display: none;
-        }
-
-        .correct {
-            background-color: #d4edda;
-            color: #155724;
-            display: block;
-        }
-
-        .incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-            display: block;
-        }
-
         .info {
             margin-top: 15px;
             font-size: 18px;
@@ -89,6 +68,54 @@
             font-size: 20px;
             font-weight: bold;
             color: #2d3436;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 25px auto 0;
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #6c5ce7;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            width: 220px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: #4834d4;
+        }
+
+        /* Flash overlay */
+        .flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: white;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .flash.show {
+            display: flex;
+            opacity: 0.9;
+        }
+
+        .flash.correct {
+            background-color: #28a745;
+        }
+
+        .flash.wrong {
+            background-color: #dc3545;
         }
     </style>
 </head>
@@ -102,10 +129,13 @@
         <br>
         <button onclick="checkAnswer()">Submit</button>
 
-        <div class="message" id="message"></div>
         <div class="info" id="attempts">Attempts left: 3</div>
         <div class="score" id="score">Score: 0</div>
+
+        <a href="math.html" class="back-btn">⬅ Back to Math Page</a>
     </div>
+
+    <div id="flashBox" class="flash"></div>
 
     <script>
         let num1, num2;
@@ -120,46 +150,48 @@
 
             document.getElementById("problem").textContent = `${num1} × ${num2} = ?`;
             document.getElementById("answer").value = "";
-            document.getElementById("message").className = "message";
-            document.getElementById("message").style.display = "none";
-            attemptsLeft = 3;
             document.getElementById("attempts").textContent = `Attempts left: ${attemptsLeft}`;
             document.getElementById("answer").focus();
         }
 
+        function showFlash(text, type, callback) {
+            const flash = document.getElementById("flashBox");
+            flash.textContent = text;
+            flash.className = `flash show ${type}`;
+
+            setTimeout(() => {
+                flash.className = "flash";
+                if (callback) callback();
+            }, 1000);
+        }
+
         function checkAnswer() {
             const userAnswer = parseInt(document.getElementById("answer").value);
-            const messageBox = document.getElementById("message");
 
             if (isNaN(userAnswer)) {
-                messageBox.textContent = "Please enter a number.";
-                messageBox.className = "message incorrect";
+                showFlash("ENTER NUMBER", "wrong");
                 return;
             }
 
             if (userAnswer === correctAnswer) {
                 score++;
                 document.getElementById("score").textContent = `Score: ${score}`;
-                messageBox.textContent = "✅ Correct!";
-                messageBox.className = "message correct";
 
-                setTimeout(() => {
+                showFlash("CORRECT!", "correct", () => {
+                    attemptsLeft = 3;
                     newProblem();
-                }, 1200);
+                });
             } else {
                 attemptsLeft--;
                 document.getElementById("attempts").textContent = `Attempts left: ${attemptsLeft}`;
 
                 if (attemptsLeft > 0) {
-                    messageBox.textContent = `❌ Incorrect. Try again.`;
-                    messageBox.className = "message incorrect";
+                    showFlash("WRONG", "wrong");
                 } else {
-                    messageBox.textContent = `❌ Incorrect. The correct answer was ${correctAnswer}.`;
-                    messageBox.className = "message incorrect";
-
-                    setTimeout(() => {
+                    showFlash(`ANSWER: ${correctAnswer}`, "wrong", () => {
+                        attemptsLeft = 3;
                         newProblem();
-                    }, 1800);
+                    });
                 }
             }
         }
