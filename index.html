@@ -6,7 +6,6 @@
         body {
             font-family: Arial, sans-serif;
 
-            /* 🌄 Background */
             background:
                 linear-gradient(rgba(135, 206, 235, 0.35), rgba(34, 139, 34, 0.65)),
                 url('https://images.unsplash.com/photo-1500595046743-cd271d694d30');
@@ -19,12 +18,14 @@
             margin: 0;
             min-height: 100vh;
 
-            /* ✅ CENTER EVERYTHING */
+            /* ✅ TOP 1/3 POSITION */
             display: flex;
             justify-content: center;
-            align-items: center;
-            text-align: center;
+            align-items: flex-start;
             flex-direction: column;
+            text-align: center;
+
+            padding-top: 10vh; /* adjust this if you want higher/lower */
 
             overflow: hidden;
             position: relative;
@@ -70,7 +71,7 @@
             font-size: 24px;
         }
 
-        /* 🐝 Fireflies */
+        /* Fireflies (unchanged) */
         .firefly {
             position: absolute;
             width: 8px;
